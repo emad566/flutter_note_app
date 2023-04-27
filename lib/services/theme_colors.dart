@@ -15,4 +15,6 @@ const Color focusedBorderClr = Colors.green;
 class ThemeColors{
   static Color get appBarFrontText => Get.isDarkMode? whiteClr : whiteClr;
   static Color get noteItemBg => Get.isDarkMode? darkSecondaryClr : secondaryClr;
+  static Color get buttonText => Get.isDarkMode? whiteClr : blackClr;
+  static Color get buttonBg => Get.isDarkMode? blackClr : whiteClr.withOpacity(.8);
 }

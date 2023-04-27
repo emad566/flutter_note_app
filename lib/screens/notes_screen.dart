@@ -15,7 +15,13 @@ class _NotesScreenState extends State<NotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildNoteAppBar(context, setState: setState),
+      appBar: buildNoteAppBar(
+        context,
+        setState: setState,
+        title: 'Note',
+        icon: Icons.search,
+        onTab: (){},
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: context.theme.colorScheme.background,
         onPressed: (){
@@ -23,8 +29,9 @@ class _NotesScreenState extends State<NotesScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
+            backgroundColor: context.theme.colorScheme.background.withOpacity(0.9),
             context: context,
-            builder: (context) => const AddNoteBottomSheet(),
+            builder: (context) => AddNoteBottomSheet(),
           );
         },
         child: const Icon(Icons.add),

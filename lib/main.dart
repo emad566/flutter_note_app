@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.darkThem,
       themeMode: themeMode,
       debugShowCheckedModeBanner: false,
-      home: const NotesScreen(),
+      home:  const SafeArea(child: NotesScreen()),
     );
   }
 }

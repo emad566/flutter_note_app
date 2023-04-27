@@ -12,8 +12,18 @@ AppBar buildAppBar({
 
   return AppBar(
     automaticallyImplyLeading: isShowLeading,
+    leading: isShowLeading ? IconButton(
+      onPressed: (){
+        Get.back();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: whiteClr,
+            ),
+          )
+        : Container(),
     actions: [
-      const SizedBox(width: 20),
+      SizedBox(width: isShowLeading? 50 : 20),
       if(actionRow!=null)
         Expanded(child: actionRow),
 

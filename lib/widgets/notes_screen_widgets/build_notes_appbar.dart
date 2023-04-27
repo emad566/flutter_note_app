@@ -4,14 +4,22 @@ import 'package:flutter_note_app/widgets/build_appbar.dart';
 import 'package:flutter_note_app/widgets/notes_screen_widgets/custom_search_icon.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-AppBar buildNoteAppBar(BuildContext context, {required Function setState}) {
+AppBar buildNoteAppBar(
+  BuildContext context, {
+  required Function setState,
+  required String title,
+  required IconData icon,
+  required Function onTab,
+  bool isShowLeading = false,
+}) {
   return buildAppBar(
+      isShowLeading: isShowLeading,
       setState: setState,
       context: context,
       actionRow: Row(
         children: [
           Text(
-            'Notes',
+            title,
             style: GoogleFonts.poppins(
               textStyle: TextStyle(
                 color: ThemeColors.appBarFrontText,
@@ -20,7 +28,7 @@ AppBar buildNoteAppBar(BuildContext context, {required Function setState}) {
             ),
           ),
           const Spacer(),
-          const CustomSearchIcon(),
+          CustomSearchIcon(icon: icon, onTab: onTab),
           const SizedBox(width: 8,),
         ],
       )

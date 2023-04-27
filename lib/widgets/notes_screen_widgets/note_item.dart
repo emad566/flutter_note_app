@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_note_app/screens/edit_note_screen.dart';
 import 'package:flutter_note_app/services/theme_colors.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,7 +17,9 @@ class NoteItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const SizedBox(height: 16,),
+          const SizedBox(
+            height: 16,
+          ),
           ListTile(
             title: Text(
               'Text Testing flutter',
@@ -33,13 +35,30 @@ class NoteItem extends StatelessWidget {
                 ),
               ),
             ),
-            trailing: IconButton(
-              icon: Icon(
-                FontAwesomeIcons.trash,
-                size: 28,
-                color: context.theme.colorScheme.background,
-              ),
-              onPressed: () {},
+            trailing: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+
+                  },
+                  child: Icon(
+                    Icons.delete,
+                    size: 22,
+                    color: context.theme.colorScheme.background,
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const EditNotesScreen());
+                  },
+                  child: Icon(
+                    Icons.edit,
+                    size: 22,
+                    color: context.theme.colorScheme.background,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(
@@ -51,7 +70,8 @@ class NoteItem extends StatelessWidget {
               'April 21, 2023',
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
-                  color: context.theme.textTheme.titleSmall!.color!.withOpacity(.8),
+                  color: context.theme.textTheme.titleSmall!.color!
+                      .withOpacity(.8),
                   fontSize: 14,
                 ),
               ),
