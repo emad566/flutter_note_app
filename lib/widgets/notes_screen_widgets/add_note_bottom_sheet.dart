@@ -106,6 +106,8 @@ class _NoteAddFormState extends State<NoteAddForm> {
             textInputAction: TextInputAction.done,
             maxLines: 5,
           ),
+          const SizedBox(height: 20,),
+          buildSelectNoteColor(),
           const SizedBox(
             height: 50,
           ),
@@ -124,10 +126,44 @@ class _NoteAddFormState extends State<NoteAddForm> {
     );
   }
 
+  Widget buildSelectNoteColor() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: NoteCubit.noteColors.map((e) => Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: GestureDetector(
+            onTap: (){
+              setState(() {
+                NoteCubit.noteColorDefault = e;
+              });
+            },
+            child: CircleAvatar(
+              radius: 25,
+              backgroundColor: e,
+              child: e == NoteCubit.noteColorDefault
+                  ? const Icon(
+                      Icons.done,
+                      size: 20,
+                    )
+                  : Container(),
+            ),
+          ),
+        ),).toList(),
+      ),
+    );
+  }
+
   void submitEditNote(BuildContext context) {
     if (NoteAddForm.formKey.currentState!.validate()) {
       widget.noteEdit!.title = NoteAddForm.titleController.text;
       widget.noteEdit!.subTitle = NoteAddForm.contentController.text;
+      widget.noteEdit!.color = NoteCubit.noteColorDefault.value;
       widget.noteEdit!.save();
       NoteCubit.get(context).readNotes();
       Get.back();
@@ -142,7 +178,7 @@ class _NoteAddFormState extends State<NoteAddForm> {
         title: NoteAddForm.titleController.text,
         subTitle: NoteAddForm.contentController.text,
         date: DateFormat.yMd().format(DateTime.now()),
-        color: Colors.blue.value,
+        color: NoteCubit.noteColorDefault.value,
       );
       await NoteCubit.get(widget.cubitContext).createNote(note);
       NoteCubit.listNotesScrollController.animateTo(

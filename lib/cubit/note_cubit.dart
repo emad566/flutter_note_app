@@ -12,6 +12,19 @@ class NoteCubit extends Cubit<NoteState> {
   static NoteCubit get(context) => BlocProvider.of<NoteCubit>(context);
   static ScrollController listNotesScrollController = ScrollController();
 
+  static const List<Color> noteColors = [Colors.green,
+    Colors.blue,
+    Colors.blueAccent,
+    Colors.blueGrey,
+    Colors.white,
+    Colors.white38,
+    Colors.red,
+    Colors.tealAccent,
+    Colors.yellow,
+    Colors.yellowAccent,
+    Colors.yellowAccent,
+  ];
+  static Color noteColorDefault = Colors.green;
 
   Future<void> createNote(NoteModel note) async{
     try{
