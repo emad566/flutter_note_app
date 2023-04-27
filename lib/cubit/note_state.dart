@@ -6,7 +6,11 @@ class NoteInitial extends NoteState {}
 
 // Start Read Note States
 class ReadNoteLoading extends NoteState {}
-class ReadNoteSuccess extends NoteState {}
+class ReadNoteSuccess extends NoteState {
+  final List<NoteModel> notes;
+
+  ReadNoteSuccess(this.notes);
+}
 class ReadNoteFailure extends NoteState {
   final String errMsg;
   ReadNoteFailure(this.errMsg);

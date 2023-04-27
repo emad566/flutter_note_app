@@ -24,7 +24,7 @@ void main() async{
   runApp(
     MultiBlocProvider(
         providers: [
-          BlocProvider(create: (BuildContext context)=> NoteCubit()),
+          BlocProvider(create: (BuildContext context)=> NoteCubit()..readNotes()),
         ],
         child: const MyApp()
     ),

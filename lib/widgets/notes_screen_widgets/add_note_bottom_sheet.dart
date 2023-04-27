@@ -107,6 +107,11 @@ class NoteAddForm extends StatelessWidget {
                   color: Colors.blue.value,
                 );
                 await NoteCubit.get(cubitContext).createNote(note);
+                NoteCubit.listNotesScrollController.animateTo(
+                  NoteCubit.listNotesScrollController.position.maxScrollExtent + 200,
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.fastOutSlowIn
+                );
               } else {
 
               }
