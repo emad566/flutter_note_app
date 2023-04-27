@@ -7,6 +7,7 @@ class Themes {
   static final ThemeData lightThem = ThemeData(
     primaryColor: primaryClr,
     scaffoldBackgroundColor: primaryClr,
+    fontFamily: GoogleFonts.poppins().fontFamily,
     appBarTheme: const AppBarTheme(
         color: primaryClr,
     ),
@@ -19,6 +20,7 @@ class Themes {
   static final ThemeData darkThem = ThemeData(
     primaryColor: darkGreyClr,
     scaffoldBackgroundColor: darkGreyClr,
+    fontFamily: GoogleFonts.poppins().fontFamily,
     appBarTheme: const AppBarTheme(
       color: darkGreyClr,
     ),
