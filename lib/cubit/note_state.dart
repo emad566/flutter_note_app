@@ -35,11 +35,3 @@ class UpdateNoteFailure extends NoteState {
 }
 // /End Update Note States
 
-// Start Delete Note States
-class DeleteNoteLoading extends NoteState {}
-class DeleteNoteSuccess extends NoteState {}
-class DeleteNoteFailure extends NoteState {
-  final String errMsg;
-  DeleteNoteFailure(this.errMsg);
-}
-// /End Delete Note States

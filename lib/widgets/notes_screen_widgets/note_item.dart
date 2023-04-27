@@ -54,7 +54,7 @@ class NoteItem extends StatelessWidget {
                 const SizedBox(height: 10,),
                 GestureDetector(
                   onTap: () {
-                    Get.to(const EditNotesScreen());
+                    Get.to(EditNotesScreen(noteEdit: note,));
                   },
                   child: Icon(
                     Icons.edit,

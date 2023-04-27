@@ -32,7 +32,6 @@ class NotesListView extends StatelessWidget {
 
     return ListView.separated(
       controller: NoteCubit.listNotesScrollController,
-      reverse: true,
       itemCount: notes.length ,
       itemBuilder: (context, index) {
         return NoteItem(note: notes[index],);

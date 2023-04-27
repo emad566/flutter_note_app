@@ -11,13 +11,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 class AddNoteBottomSheet extends StatelessWidget {
   const AddNoteBottomSheet({
     super.key,
-    this.isEdit = false,
+    this.noteEdit,
   });
 
-  final bool isEdit;
-
-
-
+  final NoteModel? noteEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,7 @@ class AddNoteBottomSheet extends StatelessWidget {
           return ModalProgressHUD(
               inAsyncCall: (state is CreateNoteLoading || state is UpdateNoteLoading)? true : false,
               child: SingleChildScrollView(
-                child: NoteAddForm(isEdit: false, cubitContext: context),
+                child: NoteAddForm(noteEdit: noteEdit, cubitContext: context),
               ),
           );
         },
@@ -54,43 +51,58 @@ class AddNoteBottomSheet extends StatelessWidget {
 }
 
 
-class NoteAddForm extends StatelessWidget {
+class NoteAddForm extends StatefulWidget {
   const NoteAddForm({
     super.key,
     required this.cubitContext,
-    this.isEdit = false,
+    this.noteEdit,
   });
 
   final BuildContext cubitContext;
-  final bool isEdit;
+  final NoteModel? noteEdit;
 
   static final GlobalKey<FormState> formKey = GlobalKey();
-  static final TextEditingController _titleController = TextEditingController();
-  static final TextEditingController _contentController = TextEditingController();
+  static final TextEditingController titleController = TextEditingController();
+  static final TextEditingController contentController = TextEditingController();
   static final GlobalKey<FormFieldState> inputKeyTitle = GlobalKey();
   static final GlobalKey<FormFieldState> inputKeyContent = GlobalKey();
 
   @override
+  State<NoteAddForm> createState() => _NoteAddFormState();
+}
+
+class _NoteAddFormState extends State<NoteAddForm> {
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.noteEdit != null){
+      NoteAddForm.titleController.text = widget.noteEdit!.title;
+      NoteAddForm.contentController.text = widget.noteEdit!.subTitle;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: NoteAddForm.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
           CustomTextField(
-            inputKey: inputKeyTitle,
+            inputKey: NoteAddForm.inputKeyTitle,
             hintText: 'Note title',
-            controller: _titleController,
+            controller: NoteAddForm.titleController,
             textInputAction: TextInputAction.next,
           ),
           const SizedBox(
             height: 12,
           ),
           CustomTextField(
-            inputKey: inputKeyContent,
+            inputKey: NoteAddForm.inputKeyContent,
             hintText: 'Note content',
-            controller: _contentController,
+            controller: NoteAddForm.contentController,
             textInputAction: TextInputAction.done,
             maxLines: 5,
           ),
@@ -98,28 +110,49 @@ class NoteAddForm extends StatelessWidget {
             height: 50,
           ),
           CustomButton(
-            label: isEdit ? 'Update' : 'Add',
+            label: widget.noteEdit !=null ? 'Update' : 'Add',
             onTab: () async {
-              if (formKey.currentState!.validate()) {
-                NoteModel note = NoteModel(
-                  title: _titleController.text,
-                  subTitle: _contentController.text,
-                  date: DateFormat.yMd().format(DateTime.now()),
-                  color: Colors.blue.value,
-                );
-                await NoteCubit.get(cubitContext).createNote(note);
-                NoteCubit.listNotesScrollController.animateTo(
-                  NoteCubit.listNotesScrollController.position.maxScrollExtent + 200,
-                  duration: const Duration(milliseconds: 1000),
-                  curve: Curves.fastOutSlowIn
-                );
-              } else {
-
+              if(widget.noteEdit == null){
+                await submitAddNote();
+              }else{
+                submitEditNote(context);
               }
             },
           )
         ],
       ),
     );
+  }
+
+  void submitEditNote(BuildContext context) {
+    if (NoteAddForm.formKey.currentState!.validate()) {
+      widget.noteEdit!.title = NoteAddForm.titleController.text;
+      widget.noteEdit!.subTitle = NoteAddForm.contentController.text;
+      widget.noteEdit!.save();
+      NoteCubit.get(context).readNotes();
+      Get.back();
+    } else {
+
+    }
+  }
+
+  Future<void> submitAddNote() async {
+    if (NoteAddForm.formKey.currentState!.validate()) {
+      NoteModel note = NoteModel(
+        title: NoteAddForm.titleController.text,
+        subTitle: NoteAddForm.contentController.text,
+        date: DateFormat.yMd().format(DateTime.now()),
+        color: Colors.blue.value,
+      );
+      await NoteCubit.get(widget.cubitContext).createNote(note);
+      NoteCubit.listNotesScrollController.animateTo(
+        // 0.0,
+        NoteCubit.listNotesScrollController.position.maxScrollExtent + 200,
+        duration: const Duration(milliseconds: 1000),
+        curve: Curves.fastOutSlowIn
+      );
+    } else {
+
+    }
   }
 }
