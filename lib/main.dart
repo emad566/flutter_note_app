@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_note_app/screens/notes_screen.dart';
 import 'package:flutter_note_app/services/theme_services.dart';
 import 'package:flutter_note_app/shared/themes.dart';
 import 'package:get/get.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.darkThem,
       themeMode: themeMode,
       debugShowCheckedModeBanner: false,
-      home: const Text('Emad'),
+      home: const NotesScreen(),
     );
   }
 }
