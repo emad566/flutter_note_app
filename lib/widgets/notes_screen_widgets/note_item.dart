@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_note_app/cubit/note_cubit.dart';
 import 'package:flutter_note_app/models/note_model.dart';
 import 'package:flutter_note_app/screens/edit_note_screen.dart';
 import 'package:flutter_note_app/services/theme_colors.dart';
@@ -41,7 +42,8 @@ class NoteItem extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-
+                    note.delete();
+                    NoteCubit.get(context).readNotes();
                   },
                   child: Icon(
                     Icons.delete,
