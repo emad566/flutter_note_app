@@ -6,6 +6,7 @@ class CustomTextField extends StatelessWidget {
     Key? key,
     required this.hintText,
     required this.controller,
+    required this.inputKey,
     this.obscureText = false,
     this.suffixIcon,
     this.validator,
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
 
   final String hintText;
   final TextEditingController controller;
+  final GlobalKey<FormFieldState> inputKey;
   final bool obscureText;
   final Function? validator;
   final Widget? suffixIcon;
@@ -27,12 +29,18 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction textInputAction;
   final bool isRequired;
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10.0),
       child: TextFormField(
-
+        key: inputKey,
+        onChanged: (val){
+          if(isRequired){
+            inputKey.currentState!.validate();
+          }
+        },
         validator: (val){
           if(isRequired && controller.text == ''){
             return 'This field is required';

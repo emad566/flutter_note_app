@@ -10,9 +10,6 @@ class EditNotesScreen extends StatefulWidget {
 }
 
 class _EditNotesScreenState extends State<EditNotesScreen> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +23,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
         onTab: () {},
 
       ),
-      body: AddNoteBottomSheet(
-        isEdit: true,
-        contentController: _contentController,
-        titleController: _titleController,
-        formKey: formKey,
-      ),
+      body: const AddNoteBottomSheet(isEdit: true),
     );
   }
 }
