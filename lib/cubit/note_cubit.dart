@@ -22,7 +22,7 @@ class NoteCubit extends Cubit<NoteState> {
     Colors.tealAccent,
     Colors.yellow,
     Colors.yellowAccent,
-    Colors.yellowAccent,
+    Colors.pink,
   ];
   static Color noteColorDefault = Colors.green;
 
