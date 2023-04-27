@@ -12,6 +12,10 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +29,20 @@ class _NotesScreenState extends State<NotesScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: context.theme.colorScheme.background,
         onPressed: (){
+          _titleController.text = '';
+          _contentController.text = '';
           showModalBottomSheet(
+            isScrollControlled: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
             backgroundColor: context.theme.colorScheme.background.withOpacity(0.9),
             context: context,
-            builder: (context) => AddNoteBottomSheet(),
+            builder: (context) => AddNoteBottomSheet(
+              contentController: _contentController,
+              titleController: _titleController,
+              formKey: formKey,
+            ),
           );
         },
         child: const Icon(Icons.add),
