@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_note_app/cubit/note_cubit.dart';
 import 'package:flutter_note_app/models/note_model.dart';
 import 'package:flutter_note_app/screens/notes_screen.dart';
 import 'package:flutter_note_app/services/theme_services.dart';
-import 'package:flutter_note_app/shared/MyBlocObserver.dart';
+import 'package:flutter_note_app/shared/my_bloc_observer.dart';
 import 'package:flutter_note_app/shared/constants.dart';
 import 'package:flutter_note_app/shared/themes.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:provider/provider.dart';
 
 
 void main() async{
@@ -17,15 +17,15 @@ void main() async{
   Bloc.observer = MyBlocObserver();
 
   await Hive.initFlutter();
-  await Hive.openBox(Caches.kHiveNotesBox);
   Hive.registerAdapter(NoteModelAdapter());
+  await Hive.openBox<NoteModel>(Caches.kHiveNotesBox);
 
   await GetStorage.init();
   runApp(
-    Provider(
-        create: (BuildContext context) {
-
-        },
+    MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (BuildContext context)=> NoteCubit()),
+        ],
         child: const MyApp()
     ),
   );

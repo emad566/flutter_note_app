@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_note_app/cubit/note_cubit.dart';
+import 'package:flutter_note_app/models/note_model.dart';
 import 'package:flutter_note_app/widgets/custom_button.dart';
 import 'package:flutter_note_app/widgets/custom_input_field.dart';
+import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class AddNoteBottomSheet extends StatelessWidget {
   const AddNoteBottomSheet({
@@ -10,11 +15,7 @@ class AddNoteBottomSheet extends StatelessWidget {
 
   final bool isEdit;
 
-  static final GlobalKey<FormState> formKey = GlobalKey();
-  static final TextEditingController _titleController = TextEditingController();
-  static final TextEditingController _contentController = TextEditingController();
-  static final GlobalKey<FormFieldState> inputKeyTitle = GlobalKey();
-  static final GlobalKey<FormFieldState> inputKeyContent = GlobalKey();
+
 
 
   @override
@@ -26,14 +27,50 @@ class AddNoteBottomSheet extends StatelessWidget {
         left: 24,
         right: 24,
       ),
-      child: SingleChildScrollView(
-        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        child: buildAddForm(),
+      child: BlocConsumer<NoteCubit, NoteState>(
+        listener: (BuildContext context, NoteState state){
+          if(state is CreateNoteFailure || state is UpdateNoteFailure){
+
+          }
+
+          if(state is CreateNoteSuccess || state is UpdateNoteSuccess){
+            Get.back();
+          }
+        },
+        builder: (BuildContext context, NoteState state){
+          return ModalProgressHUD(
+              inAsyncCall: (state is CreateNoteLoading || state is UpdateNoteLoading)? true : false,
+              child: SingleChildScrollView(
+                child: NoteAddForm(isEdit: false, cubitContext: context),
+              ),
+          );
+        },
       ),
+
+
     );
   }
+}
 
-  Form buildAddForm() {
+
+class NoteAddForm extends StatelessWidget {
+  const NoteAddForm({
+    super.key,
+    required this.cubitContext,
+    this.isEdit = false,
+  });
+
+  final BuildContext cubitContext;
+  final bool isEdit;
+
+  static final GlobalKey<FormState> formKey = GlobalKey();
+  static final TextEditingController _titleController = TextEditingController();
+  static final TextEditingController _contentController = TextEditingController();
+  static final GlobalKey<FormFieldState> inputKeyTitle = GlobalKey();
+  static final GlobalKey<FormFieldState> inputKeyContent = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
     return Form(
       key: formKey,
       child: Column(
@@ -61,9 +98,15 @@ class AddNoteBottomSheet extends StatelessWidget {
           ),
           CustomButton(
             label: isEdit ? 'Update' : 'Add',
-            onTab: () {
+            onTab: () async {
               if (formKey.currentState!.validate()) {
-
+                NoteModel note = NoteModel(
+                  title: _titleController.text,
+                  subTitle: _contentController.text,
+                  date: DateTime.now().toString(),
+                  color: Colors.blue.value,
+                );
+                await NoteCubit.get(cubitContext).createNote(note);
               } else {
 
               }
