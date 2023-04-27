@@ -5,6 +5,7 @@ import 'package:flutter_note_app/models/note_model.dart';
 import 'package:flutter_note_app/widgets/custom_button.dart';
 import 'package:flutter_note_app/widgets/custom_input_field.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class AddNoteBottomSheet extends StatelessWidget {
@@ -103,7 +104,7 @@ class NoteAddForm extends StatelessWidget {
                 NoteModel note = NoteModel(
                   title: _titleController.text,
                   subTitle: _contentController.text,
-                  date: DateTime.now().toString(),
+                  date: DateFormat.yMd().format(DateTime.now()),
                   color: Colors.blue.value,
                 );
                 await NoteCubit.get(cubitContext).createNote(note);
